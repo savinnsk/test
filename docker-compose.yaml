@@ -1,0 +1,184 @@
+version: "3.8"
+services:
+  # api:
+  #   image: payments_hub-api
+  #   build:
+  #     context: ./services/api
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/api/src:/payments_hub/app/src
+  #     - ./services/api/package.json:/payments_hub/app/package.json
+  #   ports:
+  #     - "3000:3000"
+  #   restart: always
+  #   env_file:
+  #     - ./services/api/.env
+  #   depends_on:
+  #     - mongo-db
+  #   command: yarn start:dev api
+  # pagarme-microservice:
+  #   image: payments_hub-pagarme-microservice
+  #   build:
+  #     context: ./services/pagarme-microservice
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/pagarme-microservice/src:/payments_hub/app/src
+  #     - ./services/pagarme-microservice/package.json:/payments_hub/app/package.json
+  #   ports:
+  #     - "3001:3001"
+  #   restart: always
+  #   env_file:
+  #     - ./services/pagarme-microservice/.env
+  #   command: yarn start:dev pagarme-microservice
+  # pagseguro-microservice:
+  #   image: payments_hub-pagseguro-microservice
+  #   build:
+  #     context: ./services/pagseguro-microservice
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/pagseguro-microservice/src:/payments_hub/app/src
+  #     - ./services/pagseguro-microservice/package.json:/payments_hub/app/package.json
+  #   ports:
+  #     - "3002:3002"
+  #   restart: always
+  #   env_file:
+  #     - ./services/pagseguro-microservice/.env
+  #   command: yarn start:dev pagseguro-microservice
+  # paypal-microservice:
+  #   image: payments_hub-paypal-microservice
+  #   build:
+  #     context: ./services/paypal-microservice
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/paypal-microservice/src:/payments_hub/app/src
+  #     - ./services/paypal-microservice/package.json:/payments_hub/app/package.json
+  #   ports:
+  #     - "3003:3003"
+  #   restart: always
+  #   env_file:
+  #     - ./services/paypal-microservice/.env
+  #   command: yarn start:dev paypal-microservice
+  # vindi-microservice:
+  #   image: payments_hub-vindi-microservice
+  #   build:
+  #     context: ./services/vindi-microservice
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/vindi-microservice/src:/payments_hub/app/src
+  #     - ./services/vindi-microservice/package.json:/payments_hub/app/package.json
+  #   ports:
+  #     - "3004:3004"
+  #   restart: always
+  #   env_file:
+  #     - ./services/vindi-microservice/.env
+  #   command: yarn start:dev vindi-microservice
+  # mercado-pago-microservice:
+  #   image: payments_hub-mercado-pago-microservice
+  #   build:
+  #     context: ./services/mercado-pago-microservice
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/mercado-pago-microservice/src:/payments_hub/app/src
+  #     - ./services/mercado-pago-microservice/package.json:/payments_hub/app/package.json
+  #   ports:
+  #     - "3005:3005"
+  #   restart: always
+  #   env_file:
+  #     - ./services/mercado-pago-microservice/.env
+  #   command: yarn start:dev mercado-pago-microservice
+  # boletoflex-microservice:
+  #   image: payments_hub-boletoflex-microservice
+  #   build:
+  #     context: ./services/boletoflex
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/boletoflex/src:/payments_hub/app/src
+  #     - ./services/boletoflex/package.json:/payments_hub/app/package.json
+  #   ports:
+  #     - "3007:3007"
+  #   restart: always
+  #   env_file:
+  #     - ./services/boletoflex/.env
+  #   command: yarn start:dev boletoflex-microservice
+  # koin-microservice:
+  #   image: payments_hub-koin-microservice
+  #   build:
+  #     context: ./services/koin-microservice
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/koin-microservice/src:/payments_hub/app/src
+  #     - ./services/koin-microservice/package.json:/payments_hub/app/package.json
+  #   ports:
+  #     - "3008:3008"
+  #   restart: always
+  #   env_file:
+  #     - ./services/koin-microservice/.env
+  #   command: yarn start:dev koin-microservice
+  # payments-hub-admin:
+  #   image: payments_hub-payments-hub-admin
+  #   build:
+  #     context: ./services/payments-hub-admin
+  #     dockerfile: ./Dockerfile
+  #     target: dev
+  #   networks:
+  #     - payments_hub-net
+  #   volumes:
+  #     - ./services/payments-hub-admin/src:/payments_hub/app/src
+  #     - ./services/payments-hub-admin/package.json:/payments_hub/app/package.json
+  #   environment:
+  #     - PORT=3006
+  #   restart: always
+  #   command: npm start
+  payments_hub-redis:
+    container_name: ${CONTAINER_NAME:-dev-payments_hub-redis}
+    image: "redis:5.0.4-stretch"
+    stop_grace_period: "${DOCKER_STOP_GRACE_PERIOD:-3s}"
+    networks:
+      - payments_hub-net
+    ports:
+      - "6379:6379"
+    command: ["--notify-keyspace-events", "AKE"]
+    volumes:
+      - ./data/caches/:/data
+  mongo-db:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: payment_hub
+      MONGO_INITDB_DATABASE: payments_hub
+    networks:
+      - payments_hub-net
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - ./data/db:/data/db
+
+networks:
+  payments_hub-net:
+    name: payments_hub
+    driver: bridge
