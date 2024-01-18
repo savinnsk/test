@@ -1,0 +1,1 @@
+{"version":3,"file":"koin.config.js","sourceRoot":"","sources":["../../../src/common/config/koin.config.ts"],"names":[],"mappings":";;AAAA,kBAAe,GAAG,EAAE,CAAC,CAAC;IACpB,QAAQ,EAAE,OAAO,CAAC,GAAG,CAAC,cAAc;IACpC,MAAM,EAAE,OAAO,CAAC,GAAG,CAAC,YAAY;CACjC,CAAC,CAAC"}
