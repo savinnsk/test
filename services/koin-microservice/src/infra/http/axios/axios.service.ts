@@ -87,10 +87,8 @@ export class AxiosAdapter implements HttpClientPort {
           'Content-Type': 'application/json',
         },
       });
-
-  
     } catch (error: any) {
-      console.log('ERROR>>>>>:', error);
+      console.log('ERROR>>>>>:', error.data);
       axiosResponse = error.response;
     }
 
@@ -104,7 +102,6 @@ export class AxiosAdapter implements HttpClientPort {
     return {
       statusCode: axiosResponse.status,
       body: axiosResponse.data,
- 
     };
   }
 }

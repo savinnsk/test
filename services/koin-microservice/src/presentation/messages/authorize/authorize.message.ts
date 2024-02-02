@@ -12,6 +12,7 @@ import {
   CredentialsMapper,
 } from '@common/mappers/credential-mapper';
 import { TokenizeCardPaymentService } from '@infra/koin/usecases/card/tokenize-card/tokenize-card.service';
+
 @Controller()
 export class AuthorizeMessage {
   constructor(
@@ -67,10 +68,20 @@ export class AuthorizeMessage {
           return auth;
         }
 
-        const order = await this.authorizeTransactionService.execute({
+        const order: any = await this.authorizeTransactionService.execute({
           data: formattedDataApiToKoin,
           token: auth.body.Authorization,
         });
+
+        if (order.body.code && order.body.message) {
+          return HandlerError.makeError({
+            body: {
+              Code: order.body.code,
+              Message: order.body.message,
+            },
+          });
+        }
+
         if ('errors' in order) {
           return order;
         }
@@ -127,10 +138,19 @@ export class AuthorizeMessage {
       credentials,
     }).data;
 
-    const order = await this.createCardPaymentService.execute({
+    const order: any = await this.createCardPaymentService.execute({
       data: formattedDataApiToKoin,
       token: credentials.privateKey,
     });
+
+    if (order.body.code && order.body.message) {
+      return HandlerError.makeError({
+        body: {
+          Code: order.body.code,
+          Message: order.body.message,
+        },
+      });
+    }
 
     if ('errors' in order) {
       return order;

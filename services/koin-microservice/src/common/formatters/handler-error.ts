@@ -1,15 +1,6 @@
-interface IPagarmeErrorResponse {
-  statusCode: number;
-  body: {
-    Message: string;
-    AdditionalInfo: string[];
-    Code: string;
-  };
-}
-
 export class HandlerError {
-  static makeError(error: IPagarmeErrorResponse) {
-    const errorBody = error.body?.AdditionalInfo ?? [];
+  static makeError(error: any) {
+    const errorBody = error.body.AdditionalInfo ?? [];
     return {
       status: 'failed',
       statusCode: mapperStatusCode(error.body?.Code) ?? 500,

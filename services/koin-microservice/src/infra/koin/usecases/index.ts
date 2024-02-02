@@ -7,6 +7,7 @@ import { CaptureCardPaymentService } from './card/capture-payment/capture-paymen
 import { CreateCardPaymentService } from './card/create-payment/create-payment.service';
 import { RefundCardPaymentService } from './card/refund-payment/refund-payment.service';
 import { TokenizeCardPaymentService } from './card/tokenize-card/tokenize-card.service';
+import { SendNotificationPaymentService } from './notication/send-nofication.service';
 
 export default [
   AuthService,
@@ -18,4 +19,5 @@ export default [
   CaptureCardPaymentService,
   RefundCardPaymentService,
   TokenizeCardPaymentService,
+  SendNotificationPaymentService,
 ];

@@ -21,7 +21,6 @@ export class CreateCardPaymentService {
       `Bearer ${token}`,
     );
 
-  
     if (authorizeTransaction.statusCode > 399) {
       return HandlerError.makeError(authorizeTransaction as any);
     }

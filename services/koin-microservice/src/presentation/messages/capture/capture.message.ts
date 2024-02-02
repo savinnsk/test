@@ -12,6 +12,8 @@ import {
   Credentials,
   CredentialsMapper,
 } from '@common/mappers/credential-mapper';
+import { NotificationMapper } from '@common/mappers/notification.mapper';
+import { SendNotificationPaymentService } from '@infra/koin/usecases/notication/send-nofication.service';
 
 @Controller()
 export class CaptureMessage {
@@ -19,6 +21,7 @@ export class CaptureMessage {
     private readonly captureTransactionService: CaptureTransactionService,
     private readonly authService: AuthService,
     private readonly captureCardPaymentCard: CaptureCardPaymentService,
+    private readonly sendNotificationService: SendNotificationPaymentService,
   ) {}
 
   @MessagePattern('koin-capture')
@@ -54,6 +57,16 @@ export class CaptureMessage {
           data: formattedDataApiToKoin,
           token: auth.body.Authorization,
         });
+
+        if (order.body.code && order.body.message) {
+          return HandlerError.makeError({
+            body: {
+              Code: order.body.code,
+              Message: order.body.message,
+            },
+          });
+        }
+
         console.log(
           '🚀 ~ file: capture.message.ts:46 ~ CaptureMessage ~ order:',
           order,
@@ -88,6 +101,29 @@ export class CaptureMessage {
     const captured = await this.captureCardPaymentCard.execute({
       id: payload.data.transactionId,
       token: credentials.privateKey,
+    });
+
+    if (captured.body.code && captured.body.message) {
+      return HandlerError.makeError({
+        body: {
+          Code: captured.body.code,
+          Message: captured.body.message,
+        },
+      });
+    }
+
+    const dataNotification = NotificationMapper.success({
+      data: {
+        reference_id: captured.body.transaction['reference_id'],
+        business_id: credentials.businessId,
+        status: captured.body.status.type,
+      },
+    });
+
+    await this.sendNotificationService.execute({
+      id: captured.body['order_id'],
+      token: credentials.privateKey,
+      data: dataNotification,
     });
 
     const resultFormatted = OrderMapper.captureCardToKoinToApi(captured.body);
