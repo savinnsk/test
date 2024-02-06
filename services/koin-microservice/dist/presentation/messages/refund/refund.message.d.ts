@@ -8,14 +8,5 @@ export declare class RefundMessage {
     constructor(refundCardPaymentService: RefundCardPaymentService, sendNotificationService: SendNotificationPaymentService);
     execute(payload: IPayload<ApiCreateAuthorizeDto & {
         transactionId: string;
-    }>): Promise<{
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    } | {
-        data: {
-            tansaction_id: any;
-        };
-    }>;
+    }>): Promise<any>;
 }

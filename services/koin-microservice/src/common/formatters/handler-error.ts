@@ -1,6 +1,6 @@
 export class HandlerError {
   static makeError(error: any) {
-    const errorBody = error.body.AdditionalInfo ?? [];
+    const errorBody = error.body?.AdditionalInfo ?? [];
     return {
       status: 'failed',
       statusCode: mapperStatusCode(error.body?.Code) ?? 500,

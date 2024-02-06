@@ -21,12 +21,12 @@ export class RefundCardPaymentService {
     );
 
     if (authorizeTransaction.statusCode > 399) {
-      return HandlerError.makeError(authorizeTransaction as any);
+      return authorizeTransaction;
     }
 
     return authorizeTransaction as any;
   }
   catch(error) {
-    return HandlerError.makeError(error);
+    return error;
   }
 }

@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RefundCardPaymentService = void 0;
-const handler_error_1 = require("../../../../../common/formatters/handler-error");
 const http_port_1 = require("../../../../../domain/ports/http.port");
 const common_1 = require("@nestjs/common");
 let RefundCardPaymentService = class RefundCardPaymentService {
@@ -23,12 +22,12 @@ let RefundCardPaymentService = class RefundCardPaymentService {
             method: 'put',
         }, `Bearer ${token}`);
         if (authorizeTransaction.statusCode > 399) {
-            return handler_error_1.HandlerError.makeError(authorizeTransaction);
+            return authorizeTransaction;
         }
         return authorizeTransaction;
     }
     catch(error) {
-        return handler_error_1.HandlerError.makeError(error);
+        return error;
     }
 };
 RefundCardPaymentService = __decorate([

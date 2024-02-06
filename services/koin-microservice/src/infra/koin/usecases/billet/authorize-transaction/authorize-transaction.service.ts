@@ -23,12 +23,12 @@ export class AuthorizeTransactionService {
     );
 
     if (authorizeTransaction.statusCode > 399) {
-      return HandlerError.makeError(authorizeTransaction as any);
+      return authorizeTransaction;
     }
 
     return authorizeTransaction;
   }
   catch(error) {
-    return HandlerError.makeError(error);
+    return error;
   }
 }

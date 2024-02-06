@@ -20,13 +20,14 @@ export class CaptureCardPaymentService {
       `Bearer ${token}`,
     );
 
+    console.log("CaptureCardPaymentService",JSON.stringify(authorizeTransaction, null,2));
     if (authorizeTransaction.statusCode > 399) {
-      return HandlerError.makeError(authorizeTransaction as any);
+      return authorizeTransaction ;
     }
 
     return authorizeTransaction as any;
   }
   catch(error) {
-    return HandlerError.makeError(error);
+    return error;
   }
 }

@@ -23,12 +23,12 @@ export class RefundPaymentService {
       .catch((error) => error);
 
     if (orderCreated.statusCode > 399) {
-      return HandlerError.makeError(orderCreated);
+      return orderCreated;
     }
 
     return orderCreated;
   }
   catch(error) {
-    return HandlerError.makeError(error);
+    return error;
   }
 }

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthorizeMessage = void 0;
 const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
-const handler_error_1 = require("../../../common/formatters/handler-error");
 const order_mapper_1 = require("../../../common/mappers/order.mapper");
 const authorize_transaction_service_1 = require("../../../infra/koin/usecases/billet/authorize-transaction/authorize-transaction.service");
 const auth_service_1 = require("../../../infra/koin/usecases/billet/auth/auth.service");
@@ -58,12 +57,7 @@ let AuthorizeMessage = class AuthorizeMessage {
                     token: auth.body.Authorization,
                 });
                 if (order.body.code && order.body.message) {
-                    return handler_error_1.HandlerError.makeError({
-                        body: {
-                            Code: order.body.code,
-                            Message: order.body.message,
-                        },
-                    });
+                    return order;
                 }
                 if ('errors' in order) {
                     return order;
@@ -79,10 +73,11 @@ let AuthorizeMessage = class AuthorizeMessage {
         }
         catch (err) {
             console.log("Error tn 'koin-authorize-message : ", err);
-            return handler_error_1.HandlerError.makeError(err);
+            return err;
         }
     }
     async cardPayment(payload, credentials) {
+        var _a, _b;
         const creditCardPayloadFormatted = order_mapper_1.OrderMapper.tokenizeCard(payload.data.creditCard, payload.data.code);
         const creditCardToken = await this.tokenizeCardPaymentService.execute({
             data: creditCardPayloadFormatted,
@@ -101,13 +96,8 @@ let AuthorizeMessage = class AuthorizeMessage {
             data: formattedDataApiToKoin,
             token: credentials.privateKey,
         });
-        if (order.body.code && order.body.message) {
-            return handler_error_1.HandlerError.makeError({
-                body: {
-                    Code: order.body.code,
-                    Message: order.body.message,
-                },
-            });
+        if (((_a = order === null || order === void 0 ? void 0 : order.body) === null || _a === void 0 ? void 0 : _a.code) && ((_b = order === null || order === void 0 ? void 0 : order.body) === null || _b === void 0 ? void 0 : _b.message)) {
+            order;
         }
         if ('errors' in order) {
             return order;

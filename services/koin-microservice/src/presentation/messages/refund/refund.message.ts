@@ -32,12 +32,7 @@ export class RefundMessage {
       });
 
       if (result.body.code && result.body.message) {
-        return HandlerError.makeError({
-          body: {
-            Code: result.body.code,
-            Message: result.body.message,
-          },
-        });
+        return result
       }
 
       const dataNotification = NotificationMapper.canceled({
@@ -57,7 +52,7 @@ export class RefundMessage {
       return { data: { tansaction_id: result.body.order_id } };
     } catch (err) {
       console.log(err);
-      return HandlerError.makeError(err);
+      return err;
     }
   }
 }

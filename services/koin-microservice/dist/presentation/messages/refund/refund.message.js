@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RefundMessage = void 0;
 const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
-const handler_error_1 = require("../../../common/formatters/handler-error");
 const refund_payment_service_1 = require("../../../infra/koin/usecases/card/refund-payment/refund-payment.service");
 const credential_mapper_1 = require("../../../common/mappers/credential-mapper");
 const notification_mapper_1 = require("../../../common/mappers/notification.mapper");
@@ -33,12 +32,7 @@ let RefundMessage = class RefundMessage {
                 token: credentials.privateKey,
             });
             if (result.body.code && result.body.message) {
-                return handler_error_1.HandlerError.makeError({
-                    body: {
-                        Code: result.body.code,
-                        Message: result.body.message,
-                    },
-                });
+                return result;
             }
             const dataNotification = notification_mapper_1.NotificationMapper.canceled({
                 data: {
@@ -56,7 +50,7 @@ let RefundMessage = class RefundMessage {
         }
         catch (err) {
             console.log(err);
-            return handler_error_1.HandlerError.makeError(err);
+            return err;
         }
     }
 };

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ParserMessage = void 0;
 const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
-const handler_error_1 = require("../../../common/formatters/handler-error");
 const parser_mapper_1 = require("../../../common/mappers/parser.mapper");
 let ParserMessage = class ParserMessage {
     async execute(payload) {
@@ -24,7 +23,7 @@ let ParserMessage = class ParserMessage {
         }
         catch (err) {
             console.log(err);
-            return handler_error_1.HandlerError.makeError(err);
+            return err;
         }
     }
 };

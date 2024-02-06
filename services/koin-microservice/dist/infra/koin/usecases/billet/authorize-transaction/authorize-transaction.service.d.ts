@@ -7,17 +7,7 @@ interface AuthorizeTransactionServiceProps {
 export declare class AuthorizeTransactionService {
     private readonly httpClient;
     constructor(httpClient: HttpClientPort);
-    execute({ data, token }: AuthorizeTransactionServiceProps): Promise<import("../../../../../domain/interfaces/axios-http-client.interface").HttpResponse<any> | {
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    }>;
-    catch(error: any): {
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    };
+    execute({ data, token }: AuthorizeTransactionServiceProps): Promise<import("../../../../../domain/interfaces/axios-http-client.interface").HttpResponse<any>>;
+    catch(error: any): any;
 }
 export {};

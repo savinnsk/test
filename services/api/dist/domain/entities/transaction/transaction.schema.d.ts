@@ -1,0 +1,33 @@
+import mongoose, { HydratedDocument } from 'mongoose';
+import { Currency, PaymentGateway, PaymentMethod } from '@app/payments/enums/payment.enum';
+import { Billet } from '../billet/billet.schema';
+import { Client } from '../client/client.schema';
+import { CreditCard } from '../credit-card/credit-card.schema';
+import { Payer } from '../payer/payer.schema';
+import { Pix } from '../pix/pix.schema';
+import { StatusLog } from '../status-log/status-log.schema';
+import { Exchange } from '../exchange/exchange.schema';
+import { InstallmentOption } from '../installment-option/installment-option.schema';
+export type TransactionDocument = HydratedDocument<Transaction>;
+export declare class Transaction {
+    paymentGateway: PaymentGateway;
+    paymentMethod: PaymentMethod;
+    amount: number;
+    currency: Currency;
+    installments: number;
+    installmentOptions: InstallmentOption[];
+    payer: Payer;
+    exchange?: Exchange;
+    creditCard: CreditCard;
+    billet: Billet;
+    pix: Pix;
+    transactionId: string;
+    currentStatus: string;
+    description: string;
+    code: string;
+    metadata: any;
+    statusLog: [StatusLog];
+    callbackUrl?: string;
+    client: Client;
+}
+export declare const TransactionSchema: mongoose.Schema<Transaction, mongoose.Model<Transaction, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, Transaction>;

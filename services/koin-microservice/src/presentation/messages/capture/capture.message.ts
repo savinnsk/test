@@ -58,13 +58,10 @@ export class CaptureMessage {
           token: auth.body.Authorization,
         });
 
-        if (order.body.code && order.body.message) {
-          return HandlerError.makeError({
-            body: {
-              Code: order.body.code,
-              Message: order.body.message,
-            },
-          });
+        if (order?.body?.code && order?.body?.message) {
+       
+          return order
+          
         }
 
         console.log(
@@ -89,7 +86,7 @@ export class CaptureMessage {
       return result;
     } catch (err) {
       console.log(err);
-      return HandlerError.makeError(err);
+      return err
     }
   }
 
@@ -103,14 +100,12 @@ export class CaptureMessage {
       token: credentials.privateKey,
     });
 
-    if (captured.body.code && captured.body.message) {
-      return HandlerError.makeError({
-        body: {
-          Code: captured.body.code,
-          Message: captured.body.message,
-        },
-      });
-    }
+    if (captured?.body?.code && captured?.body?.message) {
+   
+      return captured
+      
+      };
+    
 
     const dataNotification = NotificationMapper.success({
       data: {

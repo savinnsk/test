@@ -116,13 +116,14 @@ class OrderMapper {
         };
     }
     static toApi({ data, dto }) {
+        var _a;
         if (data.order_id) {
             Object.assign(data, {
                 transactionId: data.order_id,
             });
             return { data: data };
         }
-        const response = Object.assign(Object.assign({}, dto), { status: data.status, installmentOptions: data.installmentOptions.map((option) => ({
+        const response = Object.assign(Object.assign({}, dto), { status: data.status, installmentOptions: (_a = data === null || data === void 0 ? void 0 : data.installmentOptions) === null || _a === void 0 ? void 0 : _a.map((option) => ({
                 incomingPercentValue: option.incomingPercentValue,
                 fee: option.feeKoin,
                 description: option.description,

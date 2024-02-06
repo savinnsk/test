@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SendNotificationPaymentService = void 0;
-const handler_error_1 = require("../../../../common/formatters/handler-error");
 const http_port_1 = require("../../../../domain/ports/http.port");
 const common_1 = require("@nestjs/common");
 let SendNotificationPaymentService = class SendNotificationPaymentService {
@@ -27,7 +26,7 @@ let SendNotificationPaymentService = class SendNotificationPaymentService {
         return notificationTransaction;
     }
     catch(error) {
-        return handler_error_1.HandlerError.makeError(error);
+        return error;
     }
 };
 SendNotificationPaymentService = __decorate([

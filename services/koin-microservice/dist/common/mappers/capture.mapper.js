@@ -90,7 +90,8 @@ class CaptureOrderMapper {
         };
     }
     static toApi({ data, dto }) {
-        const response = Object.assign(Object.assign({}, dto), { status: data.status, installmentOptions: data.installmentOptions.map((option) => ({
+        var _a;
+        const response = Object.assign(Object.assign({}, dto), { status: data.status, installmentOptions: (_a = data === null || data === void 0 ? void 0 : data.installmentOptions) === null || _a === void 0 ? void 0 : _a.map((option) => ({
                 incomingPercentValue: option.incomingPercentValue,
                 fee: option.feeKoin,
                 description: option.description,

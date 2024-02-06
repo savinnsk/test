@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CaptureMessage = void 0;
 const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
-const handler_error_1 = require("../../../common/formatters/handler-error");
 const order_mapper_1 = require("../../../common/mappers/order.mapper");
 const capture_transaction_service_1 = require("../../../infra/koin/usecases/billet/capture-transaction/capture-transaction.service");
 const capture_mapper_1 = require("../../../common/mappers/capture.mapper");
@@ -32,6 +31,7 @@ let CaptureMessage = class CaptureMessage {
         this.sendNotificationService = sendNotificationService;
     }
     async execute(payload) {
+        var _a, _b;
         try {
             const credentials = credential_mapper_1.CredentialsMapper.getKeysValue(payload.config.publicKey);
             if (payload.data.paymentMethod == 'billet') {
@@ -51,13 +51,8 @@ let CaptureMessage = class CaptureMessage {
                     data: formattedDataApiToKoin,
                     token: auth.body.Authorization,
                 });
-                if (order.body.code && order.body.message) {
-                    return handler_error_1.HandlerError.makeError({
-                        body: {
-                            Code: order.body.code,
-                            Message: order.body.message,
-                        },
-                    });
+                if (((_a = order === null || order === void 0 ? void 0 : order.body) === null || _a === void 0 ? void 0 : _a.code) && ((_b = order === null || order === void 0 ? void 0 : order.body) === null || _b === void 0 ? void 0 : _b.message)) {
+                    return order;
                 }
                 console.log('🚀 ~ file: capture.message.ts:46 ~ CaptureMessage ~ order:', order);
                 if ('errors' in order || order.statusCode === 312) {
@@ -74,22 +69,19 @@ let CaptureMessage = class CaptureMessage {
         }
         catch (err) {
             console.log(err);
-            return handler_error_1.HandlerError.makeError(err);
+            return err;
         }
     }
     async captureCard(payload, credentials) {
+        var _a, _b;
         const captured = await this.captureCardPaymentCard.execute({
             id: payload.data.transactionId,
             token: credentials.privateKey,
         });
-        if (captured.body.code && captured.body.message) {
-            return handler_error_1.HandlerError.makeError({
-                body: {
-                    Code: captured.body.code,
-                    Message: captured.body.message,
-                },
-            });
+        if (((_a = captured === null || captured === void 0 ? void 0 : captured.body) === null || _a === void 0 ? void 0 : _a.code) && ((_b = captured === null || captured === void 0 ? void 0 : captured.body) === null || _b === void 0 ? void 0 : _b.message)) {
+            return captured;
         }
+        ;
         const dataNotification = notification_mapper_1.NotificationMapper.success({
             data: {
                 reference_id: captured.body.transaction['reference_id'],

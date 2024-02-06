@@ -26,6 +26,6 @@ export class SendNotificationPaymentService {
     return notificationTransaction as any;
   }
   catch(error) {
-    return HandlerError.makeError(error);
+    return error;
   }
 }

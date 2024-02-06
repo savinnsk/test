@@ -7,11 +7,6 @@ export declare class CaptureTransactionService {
     private readonly httpClient;
     constructor(httpClient: HttpClientPort);
     execute({ token, data }: CaptureTransactionServiceProps): Promise<any>;
-    catch(error: any): {
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    };
+    catch(error: any): any;
 }
 export {};

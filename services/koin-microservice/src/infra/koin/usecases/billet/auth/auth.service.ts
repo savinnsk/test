@@ -26,12 +26,12 @@ export class AuthService {
       });
 
     if (response.statusCode > 399) {
-      return HandlerError.makeError(response);
+      return response;
     }
 
     return response;
   }
   catch(error) {
-    return HandlerError.makeError(error);
+    return error;
   }
 }

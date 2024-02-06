@@ -6,11 +6,6 @@ export declare class GetPaymentService {
     private readonly httpClient;
     constructor(httpClient: HttpClientPort);
     execute({ id }: GetPaymentServiceProps): Promise<any>;
-    catch(error: any): {
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    };
+    catch(error: any): any;
 }
 export {};

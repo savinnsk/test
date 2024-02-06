@@ -8,11 +8,6 @@ export declare class SendNotificationPaymentService {
     private readonly httpClient;
     constructor(httpClient: HttpClientPort);
     execute({ id, token, data }: SendNotificationPaymentServiceProps): Promise<any>;
-    catch(error: any): {
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    };
+    catch(error: any): any;
 }
 export {};

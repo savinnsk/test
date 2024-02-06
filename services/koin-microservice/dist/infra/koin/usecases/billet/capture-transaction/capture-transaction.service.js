@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CaptureTransactionService = void 0;
-const handler_error_1 = require("../../../../../common/formatters/handler-error");
 const http_port_1 = require("../../../../../domain/ports/http.port");
 const common_1 = require("@nestjs/common");
 let CaptureTransactionService = class CaptureTransactionService {
@@ -26,23 +25,10 @@ let CaptureTransactionService = class CaptureTransactionService {
         }, token)
             .then((res) => res)
             .catch((error) => error);
-        if (+orderCreated.body.Code > 299) {
-            return +orderCreated.body.Code === 312
-                ? {
-                    status: 'approved',
-                    statusCode: 312,
-                    data: {
-                        transactionId: orderCreated.body.IdTransaction,
-                        message: orderCreated.body.Message,
-                        statusKoin: 312,
-                    },
-                }
-                : handler_error_1.HandlerError.makeError(orderCreated);
-        }
         return orderCreated;
     }
     catch(error) {
-        return handler_error_1.HandlerError.makeError(error);
+        return error;
     }
 };
 CaptureTransactionService = __decorate([

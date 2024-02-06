@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TokenizeCardPaymentService = void 0;
-const handler_error_1 = require("../../../../../common/formatters/handler-error");
 const http_port_1 = require("../../../../../domain/ports/http.port");
 const common_1 = require("@nestjs/common");
 let TokenizeCardPaymentService = class TokenizeCardPaymentService {
@@ -23,13 +22,14 @@ let TokenizeCardPaymentService = class TokenizeCardPaymentService {
             method: 'post',
             body: data,
         }, `Bearer ${token}`);
+        console.log("TokenizeCardPaymentService", JSON.stringify(authorizeTransaction, null, 2));
         if (authorizeTransaction.statusCode > 399) {
-            return handler_error_1.HandlerError.makeError(authorizeTransaction);
+            return authorizeTransaction;
         }
         return authorizeTransaction;
     }
     catch(error) {
-        return handler_error_1.HandlerError.makeError(error);
+        return error;
     }
 };
 TokenizeCardPaymentService = __decorate([

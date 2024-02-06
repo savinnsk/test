@@ -7,17 +7,7 @@ interface CreateCardPaymentServiceProps {
 export declare class CreateCardPaymentService {
     private readonly httpClient;
     constructor(httpClient: HttpClientPort);
-    execute({ data, token }: CreateCardPaymentServiceProps): Promise<import("../../../../../domain/interfaces/axios-http-client.interface").HttpResponse<any> | {
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    }>;
-    catch(error: any): {
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    };
+    execute({ data, token }: CreateCardPaymentServiceProps): Promise<import("../../../../../domain/interfaces/axios-http-client.interface").HttpResponse<any>>;
+    catch(error: any): any;
 }
 export {};

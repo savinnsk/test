@@ -16,10 +16,5 @@ export declare class CaptureMessage {
     }>): Promise<any>;
     captureCard(payload: IPayload<ApiCreateAuthorizeDto & {
         transactionId: string;
-    }>, credentials: Credentials): Promise<{
-        status: string;
-        statusCode: number;
-        message: any;
-        errors: any[];
-    } | import("@common/mappers/order.mapper").IToApiResponse>;
+    }>, credentials: Credentials): Promise<any>;
 }

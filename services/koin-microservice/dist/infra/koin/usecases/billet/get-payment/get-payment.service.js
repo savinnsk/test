@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetPaymentService = void 0;
-const handler_error_1 = require("../../../../../common/formatters/handler-error");
 const http_port_1 = require("../../../../../domain/ports/http.port");
 const common_1 = require("@nestjs/common");
 let GetPaymentService = class GetPaymentService {
@@ -26,12 +25,12 @@ let GetPaymentService = class GetPaymentService {
             .then((res) => res)
             .catch((error) => error);
         if (orderCreated.statusCode > 399) {
-            return handler_error_1.HandlerError.makeError(orderCreated);
+            return orderCreated;
         }
         return orderCreated;
     }
     catch(error) {
-        return handler_error_1.HandlerError.makeError(error);
+        return error;
     }
 };
 GetPaymentService = __decorate([

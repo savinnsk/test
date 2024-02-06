@@ -134,7 +134,7 @@ export class CaptureOrderMapper {
     const response = {
       ...dto,
       status: data.status,
-      installmentOptions: data.installmentOptions.map((option) => ({
+      installmentOptions: data?.installmentOptions?.map((option) => ({
         incomingPercentValue: option.incomingPercentValue,
         fee: option.feeKoin,
         description: option.description,
