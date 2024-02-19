@@ -1,11 +1,11 @@
 export class HandlerError {
   static makeError(error: any) {
-    const errorBody = error.body?.AdditionalInfo ?? [];
+    const errorBody = error?.body?.AdditionalInfo ?? [];
     return {
       status: 'failed',
       statusCode: mapperStatusCode(error.body?.Code) ?? 500,
       message: error.body?.Message ?? 'Unexpected error',
-      errors: [...errorBody, error.body.Message],
+      errors: [...errorBody, error?.body?.Message] || error,
     };
   }
 }

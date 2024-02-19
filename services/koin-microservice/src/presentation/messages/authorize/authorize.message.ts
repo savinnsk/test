@@ -74,7 +74,12 @@ export class AuthorizeMessage {
         });
 
         if (order.body.code && order.body.message) {
-          return order
+          return HandlerError.makeError({
+            body: {
+              Code: order.body.code,
+              Message: order.body.message,
+            },
+          });
         }
 
         if ('errors' in order) {
@@ -94,7 +99,7 @@ export class AuthorizeMessage {
       return result;
     } catch (err) {
       console.log("Error tn 'koin-authorize-message : ", err);
-      return err
+      return HandlerError.makeError(err);
     }
   }
 
@@ -138,10 +143,13 @@ export class AuthorizeMessage {
       token: credentials.privateKey,
     });
 
-    if (order?.body?.code && order?.body?.message) {
-    
-        order
-      
+    if (order.body.code && order.body.message) {
+      return HandlerError.makeError({
+        body: {
+          Code: order.body.code,
+          Message: order.body.message,
+        },
+      });
     }
 
     if ('errors' in order) {

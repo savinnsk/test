@@ -21,14 +21,13 @@ export class TokenizeCardPaymentService {
       `Bearer ${token}`,
     );
 
-    console.log("TokenizeCardPaymentService",JSON.stringify(authorizeTransaction, null,2));
     if (authorizeTransaction.statusCode > 399) {
-      return authorizeTransaction;
+      return HandlerError.makeError(authorizeTransaction as any);
     }
 
     return authorizeTransaction;
   }
   catch(error) {
-    return error;
+    return HandlerError.makeError(error);
   }
 }

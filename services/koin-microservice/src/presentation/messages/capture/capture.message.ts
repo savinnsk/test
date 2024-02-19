@@ -27,7 +27,7 @@ export class CaptureMessage {
   @MessagePattern('koin-capture')
   async execute(
     @Payload()
-    payload: IPayload<ApiCreateAuthorizeDto & { transactionId: string }>,
+    payload: IPayload<ApiCreateAuthorizeDto & { transactionId: string , metadata : {antifraud_ref_id : string}}>,
   ) {
     try {
       const credentials = CredentialsMapper.getKeysValue(
@@ -58,10 +58,13 @@ export class CaptureMessage {
           token: auth.body.Authorization,
         });
 
-        if (order?.body?.code && order?.body?.message) {
-       
-          return order
-          
+        if (order.body.code && order.body.message) {
+          return HandlerError.makeError({
+            body: {
+              Code: order.body.code,
+              Message: order.body.message,
+            },
+          });
         }
 
         console.log(
@@ -86,13 +89,13 @@ export class CaptureMessage {
       return result;
     } catch (err) {
       console.log(err);
-      return err
+      return HandlerError.makeError(err);
     }
   }
 
   async captureCard(
     @Payload()
-    payload: IPayload<ApiCreateAuthorizeDto & { transactionId: string }>,
+    payload: IPayload<ApiCreateAuthorizeDto & { transactionId: string, metadata : {antifraud_ref_id : string} }>,
     credentials: Credentials,
   ) {
     const captured = await this.captureCardPaymentCard.execute({
@@ -100,25 +103,20 @@ export class CaptureMessage {
       token: credentials.privateKey,
     });
 
-    if (captured?.body?.code && captured?.body?.message) {
-   
-      return captured
-      
-      };
-    
+    if (captured.body.code && captured.body.message) {
+      return HandlerError.makeError({
+        body: {
+          Code: captured.body.code,
+          Message: captured.body.message,
+        },
+      });
+    }
 
-    const dataNotification = NotificationMapper.success({
-      data: {
-        reference_id: captured.body.transaction['reference_id'],
-        business_id: credentials.businessId,
-        status: captured.body.status.type,
-      },
-    });
 
     await this.sendNotificationService.execute({
-      id: captured.body['order_id'],
+      id: payload.data.metadata.antifraud_ref_id,
       token: credentials.privateKey,
-      data: dataNotification,
+      data: NotificationMapper.success(),
     });
 
     const resultFormatted = OrderMapper.captureCardToKoinToApi(captured.body);

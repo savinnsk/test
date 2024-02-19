@@ -23,12 +23,12 @@ export class GetPaymentService {
       .catch((error) => error);
 
     if (orderCreated.statusCode > 399) {
-      return orderCreated;
+      return HandlerError.makeError(orderCreated);
     }
 
     return orderCreated;
   }
   catch(error) {
-    return error;
+    return HandlerError.makeError(error);
   }
 }

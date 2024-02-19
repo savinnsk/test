@@ -14,7 +14,7 @@ export class ParserMessage {
       return ParserMapper.toApi(payload);
     } catch (err) {
       console.log(err);
-      return err;
+      return HandlerError.makeError(err);
     }
   }
 }

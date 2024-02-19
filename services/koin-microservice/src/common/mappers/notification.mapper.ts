@@ -1,20 +1,30 @@
+export type Notification = {
+  type: string
+  sub_type: string,
+  notification_date: string,
+  message: string
+}
+
+
+
 export class NotificationMapper {
-  static success({ data }: any): any {
-    return {
-      transaction: {
-        reference_id: data.reference_id,
-        business_id: data.business_id,
-      },
-      status: 'Confirmed',
-    };
+  static success(): Notification {
+    return {     
+        type: "STATUS",
+        sub_type: "FINALIZED",
+        notification_date: new Date().toISOString(),
+        message: "Notification about finalized"
+      
   }
-  static canceled({ data }: any): any {
+
+}
+  static canceled(): Notification {
     return {
-      transaction: {
-        reference_id: data.reference_id,
-        business_id: data.business_id,
-      },
-      status: 'Cancelled',
-    };
+      type: "STATUS",
+      sub_type: "CANCELLED",
+      notification_date: new Date().toISOString(),
+      message: "Notification about Cancelled"
+    
+}
   }
 }

@@ -19,7 +19,7 @@ export class RefundMessage {
   @MessagePattern('koin-refund')
   async execute(
     @Payload()
-    payload: IPayload<ApiCreateAuthorizeDto & { transactionId: string }>,
+    payload: IPayload<ApiCreateAuthorizeDto & { transactionId: string ,metadata : {antifraud_ref_id : string} }>,
   ) {
     try {
       const credentials = CredentialsMapper.getKeysValue(
@@ -32,27 +32,25 @@ export class RefundMessage {
       });
 
       if (result.body.code && result.body.message) {
-        return result
+        return HandlerError.makeError({
+          body: {
+            Code: result.body.code,
+            Message: result.body.message,
+          },
+        });
       }
 
-      const dataNotification = NotificationMapper.canceled({
-        data: {
-          reference_id: result.body.transaction['reference_id'],
-          business_id: credentials.businessId,
-          status: result.body.status.type,
-        },
-      });
 
       await this.sendNotificationService.execute({
-        id: result.body['order_id'],
+        id: payload.data.metadata.antifraud_ref_id,
         token: credentials.privateKey,
-        data: dataNotification,
+        data: NotificationMapper.canceled(),
       });
 
       return { data: { tansaction_id: result.body.order_id } };
     } catch (err) {
       console.log(err);
-      return err;
+      return HandlerError.makeError(err);
     }
   }
 }
